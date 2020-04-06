@@ -1,0 +1,8 @@
+MANIFEST
+/.idea
+/venv
+__pycache__
+.ipynb_checkpoints
+acgan/data
+acgan/logs
+google_credentials.json
