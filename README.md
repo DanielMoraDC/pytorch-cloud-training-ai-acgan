@@ -91,7 +91,7 @@ gcloud ai-platform jobs submit training $JOB_NAME \
     --job-dir ${OUTPUT_BUCKET} \
     --runtime-version 2.1 \
     --python-version 3.7 \
-    --module-name acgan.train \
+    --module-name acgan.google_train \
     --package-path acgan/ \
     --packages ${PACKAGES_BUCKET}/${TORCHVISION_PACKAGE},${PACKAGES_BUCKET}/${PYTORCH_PACKAGE} \
     --region ${REGION} \
@@ -152,7 +152,7 @@ GOOGLE_APPLICATION_CREDENTIALS=<google-credentials-file> \
 PYTHONPATH=$(pwd):$PYTHONPATH \
 gcloud ai-platform local train \
     --job-dir <output_dir> \
-    --module-name acgan.train \
+    --module-name acgan.google_train \
     --package-path acgan/ \
     --verbosity debug
 ``` 
