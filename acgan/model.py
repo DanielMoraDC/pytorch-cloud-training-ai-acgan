@@ -6,12 +6,12 @@ import torch
 
 from torch.utils.tensorboard import SummaryWriter
 
-from acgan.discriminator import (
+from discriminator import (
     Discriminator,
     initialize_weights as init_weights_d
 )
 
-from acgan.generator import (
+from generator import (
     Generator,
     initialize_weights as init_weights_g
 )
@@ -205,7 +205,6 @@ class ACGAN(object):
         optimizer_g, optimizer_d = self._optimizers(lr, b1, b2)
 
         batches_per_epoch = len(self._data_loader)
-        total_batches = len(self._data_loader)
 
         writer = SummaryWriter(logs_dir)
 
@@ -238,7 +237,7 @@ class ACGAN(object):
                     self._track_generated_images(writer, iteration)
 
                 iteration_info = "[Epoch %d/%d] [Batch %d/%d]" \
-                                 % (epoch, n_epochs, i, total_batches)
+                                 % (epoch, n_epochs, i, batches_per_epoch)
                 metrics_info = "[D loss: %f, acc: %d%%] [G loss: %f]" \
                                % (d_loss.item(), 100 * acc, g_loss.item())
                 print(" ".join([iteration_info, metrics_info]))

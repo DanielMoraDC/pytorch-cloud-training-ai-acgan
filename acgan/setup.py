@@ -12,6 +12,5 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    scripts=['google_train.py'],
-    python_requires='>=3.7'
+    python_requires='>=3.5'
 )
