@@ -41,7 +41,7 @@ class Discriminator(nn.Module):
         )
         self.class_out_layer = nn.Sequential(
             nn.Linear(base_feature_maps * 8 * ds_size ** 2, n_classes),
-            nn.Softmax()
+            nn.Softmax(dim=-1)
         )
 
     def forward(self, img):
