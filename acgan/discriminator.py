@@ -36,11 +36,11 @@ class Discriminator(nn.Module):
 
         # Output layers
         self.adversarial_out_layer = nn.Sequential(
-            nn.Linear(128 * ds_size ** 2, 1),
+            nn.Linear(base_feature_maps * 8 * ds_size ** 2, 1),
             nn.Sigmoid()
         )
         self.class_out_layer = nn.Sequential(
-            nn.Linear(128 * ds_size ** 2, n_classes),
+            nn.Linear(base_feature_maps * 8 * ds_size ** 2, n_classes),
             nn.Softmax()
         )
 
