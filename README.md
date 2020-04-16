@@ -1,7 +1,10 @@
 # Google AI Platform with PyTorch tutorial
 
-This repo is a walkthrough on how to send Pytorch training jobs to Google Cloud using
-your command line.
+This repo is a walkthrough on how to use Pytorch for training and deploying
+models using Google AI Platform:
+ 
+ - [Training in Google AI Platform](#training-in-google-aI-platform)
+ - [Deploying trained models](#deploying-trained-models)
 
 This particular example uses an ACGAN with the FashionMNISt
 dataset (code adapted from [this
@@ -177,3 +180,18 @@ Tensorboard interface examples:
 Metrics in Tensorboard     |  Generated examples in Tensorboard 
 :-------------------------:|:-------------------------:
 ![](readme_images/tensorboard_1.png)  |  ![](readme_images/tensorboard_2.png)
+
+
+## Deploying trained models
+
+By now, deploying ML models is restricted to Scikit-learn, Xgboost and Tensorflow
+frameworks. Though deploying other models is possible, other limtations (such as
+the [maximum size of 500MB per model](https://cloud.google.com/ai-platform/prediction/docs/quotas#requesting_a_quota_increase)
+, including the auxiliar packages) made it unfeasible for us to deploy our example.
+
+
+## References
+
+- [PyTorch model deployment in AI Platform](https://stackoverflow.com/questions/60423140/pytorch-model-deployment-in-ai-platform)
+- [AI in Depth: Serving a PyTorch text classifier on AI Platform Serving using custom 
+online prediction](https://cloud.google.com/blog/products/ai-machine-learning/ai-in-depth-serving-a-pytorch-text-classifier-on-ai-platform-serving-using-custom-online-prediction)
