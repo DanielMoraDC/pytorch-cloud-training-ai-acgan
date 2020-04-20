@@ -52,10 +52,6 @@ if __name__ == '__main__':
                         type=str,
                         default='data',
                         help="Folder where FashionMNIST data will be stored")
-    parser.add_argument("--stats_interval",
-                        type=int,
-                        default=100,
-                        help="Interval between Tensorboard metrics tracking")
 
     opt = parser.parse_args()
     print('Run parameters {}'.format(opt))
@@ -80,8 +76,7 @@ if __name__ == '__main__':
                 logs_dir=opt.job_dir,
                 lr=opt.lr,
                 b1=opt.b1,
-                b2=opt.b2,
-                stats_interval=opt.stats_interval)
+                b2=opt.b2)
 
     model.save_discriminator('discriminator.pt')
     model.save_generator('generator.pt')

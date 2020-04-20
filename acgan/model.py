@@ -203,8 +203,7 @@ class ACGAN(object):
               logs_dir: str,
               lr: float,
               b1: float,
-              b2: float,
-              stats_interval: int):
+              b2: float):
 
         print('Starting training')
 
@@ -225,21 +224,9 @@ class ACGAN(object):
 
         print('Batches per epoch: {}'.format(batches_per_epoch))
 
-        try:
-            writer = SummaryWriter(logs_dir)
-        except Exception as e:
-            print('Exception occurred: {}'.format(e))
-
-        print('Before loop')
-
         for epoch in range(n_epochs):
 
-            print('Epoch: {}'.format(epoch))
-
             for i, (imgs, labels) in enumerate(self._data_loader):
-
-                iteration = epoch * batches_per_epoch + i
-                print('Iteration: {}'.format(iteration))
 
                 real_imgs = imgs.to(DEFAULT_DEVICE)
                 real_labels = labels.to(DEFAULT_DEVICE)
@@ -258,12 +245,6 @@ class ACGAN(object):
                                               optimizer=optimizer_d,
                                               adversarial_loss=adversarial_loss,  # noqa
                                               auxiliary_loss=auxiliary_loss)
-
-                if iteration % stats_interval == 0:
-                    print('Entering tracking section')
-                    ACGAN._track_metrics(
-                        writer, g_loss, d_loss, d_real_loss, d_fake_loss, acc, iteration)  # noqa
-                    self._track_generated_images(writer, iteration)
 
                 iteration_info = "[Epoch %d/%d] [Batch %d/%d]" \
                                  % (epoch, n_epochs, i, batches_per_epoch)
