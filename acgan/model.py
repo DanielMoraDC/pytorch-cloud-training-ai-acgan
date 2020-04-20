@@ -225,7 +225,10 @@ class ACGAN(object):
 
         print('Batches per epoch: {}'.format(batches_per_epoch))
 
-        writer = SummaryWriter(logs_dir)
+        try:
+            writer = SummaryWriter(logs_dir)
+        except Exception as e:
+            print('Exception occurred: {}'.format(e))
 
         print('Before loop')
 
