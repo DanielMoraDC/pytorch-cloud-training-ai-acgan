@@ -232,6 +232,7 @@ class ACGAN(object):
                 iteration = epoch * batches_per_epoch + i
 
                 if iteration % stats_interval == 0:
+                    print('Entering tracking section')
                     ACGAN._track_metrics(
                         writer, g_loss, d_loss, d_real_loss, d_fake_loss, acc, iteration)  # noqa
                     self._track_generated_images(writer, iteration)

@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser.add_argument('--model-dir',
                         dest='job_dir',
                         type=str,
-                        default=os.environ['SM_MODEL_DIR'],
+                        default=os.environ.get('SM_MODEL_DIR'),
                         help="""
                             This is the folder where model and metrics will
                             be stored. If running in AWS, folder will be
