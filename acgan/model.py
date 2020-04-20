@@ -6,19 +6,27 @@ import torch
 
 from torch.utils.tensorboard import SummaryWriter
 
+print('Pytorch version: {}'.format(torch.__version__))
+
 from discriminator import (
     Discriminator,
     initialize_weights as init_weights_d
 )
+
+print('Imported discriminator')
 
 from generator import (
     Generator,
     initialize_weights as init_weights_g
 )
 
+print('Imported generator')
+
 
 DEFAULT_DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else 'cpu'
 CUDA_ENABLED = True if torch.cuda.is_available() else False
+
+print('CUDA Enabled: {}'.format(CUDA_ENABLED))
 
 
 class ACGAN(object):
@@ -197,19 +205,38 @@ class ACGAN(object):
               b1: float,
               b2: float,
               stats_interval: int):
+
+        print('Starting training')
+
         self._generator.apply(init_weights_g)
         self._discriminator.apply(init_weights_d)
 
+        print('Initialized weights')
+
         adversarial_loss, auxiliary_loss = ACGAN._losses()
+
+        print('Created losses')
 
         optimizer_g, optimizer_d = self._optimizers(lr, b1, b2)
 
+        print('Created optimizers')
+
         batches_per_epoch = len(self._data_loader)
+
+        print('Batches per epoch: {}'.format(batches_per_epoch))
 
         writer = SummaryWriter(logs_dir)
 
+        print('Before loop')
+
         for epoch in range(n_epochs):
+
+            print('Epoch: {}'.format(epoch))
+
             for i, (imgs, labels) in enumerate(self._data_loader):
+
+                iteration = epoch * batches_per_epoch + i
+                print('Iteration: {}'.format(iteration))
 
                 real_imgs = imgs.to(DEFAULT_DEVICE)
                 real_labels = labels.to(DEFAULT_DEVICE)
@@ -228,8 +255,6 @@ class ACGAN(object):
                                               optimizer=optimizer_d,
                                               adversarial_loss=adversarial_loss,  # noqa
                                               auxiliary_loss=auxiliary_loss)
-
-                iteration = epoch * batches_per_epoch + i
 
                 if iteration % stats_interval == 0:
                     print('Entering tracking section')
