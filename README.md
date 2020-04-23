@@ -2,7 +2,7 @@
 
 This repo is a walkthrough on how to use Pytorch for training and deploying
 models using Google AI Platform:
- 
+
  - [Training in Google AI Platform](#training-in-google-aI-platform)
  - [Deploying trained models](#deploying-trained-models)
 
@@ -40,9 +40,12 @@ Google Cloud Storage.
 1. Send training job.
 1. Visualize training using Tensorboard.
 
+Be aware that all buckets and jobs will be created in the default configured
+project for Google Cloud client.
+
 ### Prepare Google Cloud Buckets
 
-we need to create a couple of buckets (make sure they are in the same zone):
+We need to create a couple of buckets (make sure they are in the same zone):
 
 - First bucket will collect the outputs of the training process.
 
@@ -62,21 +65,26 @@ with](https://cloud.google.com/ai-platform/training/docs/algorithms)
 gsutil mb -c standard -l <zone> gs://<packages-bucket-name>
 
 # Download torchvision wheel file
-export TORCHVISION_PACKAGE="torchvision-0.5.0+cu100-cp37-cp37m-linux_x86_64.whl"
-wget https://download.pytorch.org/whl/${TORCHVISION_PACKAGE}
+wget https://download.pytorch.org/whl/cu100/torchvision-0.5.0%2Bcu100-cp37-cp37m-linux_x86_64.whl
 
 # Download pytorch wheel file
-export PYTORCH_PACKAGE="torch-1.4.0+cu100-cp37-cp37m-linux_x86_64.whl"
-wget https://download.pytorch.org/whl/cu100/${PYTORCH_PACKAGE}
+wget https://download.pytorch.org/whl/cu100/torch-1.4.0%2Bcu100-cp37-cp37m-linux_x86_64.whl
 
 # Upload files to bucket
+export PYTORCH_PACKAGE="torch-1.4.0+cu100-cp37-cp37m-linux_x86_64.whl"
+export TORCHVISION_PACKAGE="torchvision-0.5.0+cu100-cp37-cp37m-linux_x86_64.whl"
 gsutil -m cp ${PYTORCH_PACKAGE} gs://<packages-bucket-name>/
 gsutil -m cp ${TORCHVISION_PACKAGE} gs://<packages-bucket-name>/
 ```
 
 Archive of Torch versions to be found
-[here](https://download.pytorch.org/whl/torch_stable.html). We are using the
-Python 3.7 and Cuda 10.0 in this example.
+[here](https://download.pytorch.org/whl/torch_stable.html). In this example, we are using:
+
+- Python 3.7
+- Pytorch 1.4.0
+- Torchvision 0.5.0
+- Cuda 10
+
 
 ### Send training job
 
@@ -125,7 +133,7 @@ AI where to keep track of the job logs:
 
 #### Extra: Test locally
 
-Note that we can also test our model locally for a few epochs before sending 
+Note that we can also test our model locally for a few epochs before sending
 our job to the cloud. To do so, we need to configure the Python environment locally
 and configure a Service Account.
 
@@ -134,13 +142,13 @@ and configure a Service Account.
 Install and activate python environment:
 
 ```shell
-conda env create -f environment.yml
+conda env create --name acgan --file environment.yml python=3.7
 conda activate acgan
 ```
 
 ##### Create service account
 
-We need to ensure we have created a service account for the job and that 
+We need to ensure we have created a service account for the job and that
 we have its credentials in the corresponding `<google-credentials-file>`. Here you have
 a nice [tutorial](https://cloud.google.com/docs/authentication/getting-started
 ) on how to achieve this.
@@ -155,9 +163,9 @@ gcloud ai-platform local train \
     --module-name acgan.train \
     --package-path acgan/ \
     --verbosity debug
-``` 
+```
 
-Where `<google-credentials-file>` points to the credentials of an 
+Where `<google-credentials-file>` points to the credentials of an
 authorized Service Account.
 
 ### Visualize training in Tensorboard
@@ -177,7 +185,7 @@ tensorboard --logdir=.
 
 Tensorboard interface examples:
 
-Metrics in Tensorboard     |  Generated examples in Tensorboard 
+Metrics in Tensorboard     |  Generated examples in Tensorboard
 :-------------------------:|:-------------------------:
 ![](readme_images/tensorboard_1.png)  |  ![](readme_images/tensorboard_2.png)
 
@@ -193,5 +201,5 @@ the [maximum size of 500MB per model](https://cloud.google.com/ai-platform/predi
 ## References
 
 - [PyTorch model deployment in AI Platform](https://stackoverflow.com/questions/60423140/pytorch-model-deployment-in-ai-platform)
-- [AI in Depth: Serving a PyTorch text classifier on AI Platform Serving using custom 
+- [AI in Depth: Serving a PyTorch text classifier on AI Platform Serving using custom
 online prediction](https://cloud.google.com/blog/products/ai-machine-learning/ai-in-depth-serving-a-pytorch-text-classifier-on-ai-platform-serving-using-custom-online-prediction)
